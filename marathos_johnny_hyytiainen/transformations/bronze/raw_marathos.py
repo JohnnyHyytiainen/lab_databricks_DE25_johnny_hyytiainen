@@ -13,7 +13,7 @@ def rename_columns_to_snake_case(df):
 
 BASE_DIR = "/Volumes/marathos/default/raw"
 
-# Deklarera din streaming-tabell
+# Declare min streaming table
 @dp.table(
     name="raw_marathon_data", 
     comment="Bronze layer: Raw marathon data, columns formatted to snake_case.",
@@ -24,8 +24,8 @@ BASE_DIR = "/Volumes/marathos/default/raw"
     }
 )
 def create_raw_marathon_data():
-    # Använd Auto Loader (cloudFiles) för stabil, inkrementell file streaming.
-    # Med cloudFiles.inferColumnTypes aktiverat slipper jag hårdkoda eller läsa schemat i förväg.
+    # Använd Auto Loader (cloudFiles) för stabil, incremental file streaming.
+    # cloudFiles.inferColumnTypes -> slipper jag hårdkoda eller läsa schemat i förväg.
     df_raw_stream = (
         spark.readStream
         .format("cloudFiles")
