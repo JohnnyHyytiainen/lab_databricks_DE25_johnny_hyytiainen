@@ -15,7 +15,7 @@ BASE_DIR = "/Volumes/marathos/default/raw"
 
 # Declare min streaming table
 @dp.table(
-    name="raw_marathon_data", 
+    name="bronze.raw_marathon_data", 
     comment="Bronze layer: Raw marathon data, columns formatted to snake_case.",
     table_properties={
         "delta.columnMapping.mode": "name",
