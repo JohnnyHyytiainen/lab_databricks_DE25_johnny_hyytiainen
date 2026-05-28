@@ -2,6 +2,7 @@ from pyspark import pipelines as dp
 from pyspark.sql.functions import (
     col,
     coalesce,
+    upper,
     lit,
     when,
     trim,
@@ -26,7 +27,7 @@ def create_marathos_obt():
         df
         # === 1: event_name, event_country ===
         .withColumn("event_name", trim(regexp_replace(col("event_name"), '"', ""))) # Städa quotes
-        .withColumn("event_country", regexp_extract(col("event_name"), r"\(([^()]+)\)$", 1)) # Plocka ut ISO koderna
+        .withColumn("event_country", upper(regexp_extract(col("event_name"), r"\(([^()]+)\)$", 1))) # Plocka ut ISO koderna och standardisera till CAPS
 
         # Tvätta bort landskod ifrån event_name, jag skriver över original column för att hålla det snyggt.
         .withColumn("event_name", trim(regexp_replace(col("event_name"), r"\s*\([^()]+\)$", "")))
@@ -79,6 +80,12 @@ def create_marathos_obt():
         .withColumn("athlete_year_of_birth", expr("try_cast(athlete_year_of_birth as int)"))
         .withColumn("athlete_id", expr("try_cast(athlete_id as int)"))
         .withColumn("athlete_id", when(col("athlete_id") <= 0, lit(None)).otherwise(col("athlete_id")))
+        .withColumn("event_country", when(col("event_country") == "", lit("Missing")).otherwise(col("event_country")))
+        .withColumn("athlete_country", when(col("athlete_country") == "", lit("Missing")).otherwise(col("athlete_country")))
+        .withColumn("athlete_country", upper(col("athlete_country")))
+
+
+        
         
         # === 8: Deduplication för streaming ===
         # Baserat på uppdaterade event_name ovan
