@@ -1,0 +1,47 @@
+erDiagram
+    fact_results {
+        string result_id PK
+        string event_id
+        integer athlete_id
+        integer year_of_event
+        double performance
+        double athlete_average_speed
+    }
+
+    dim_event {
+        string event_id PK
+        string event_name
+        date event_dates
+        string event_country
+        double event_length
+        string event_unit
+        integer event_number_of_finishers
+    }
+
+    dim_athlete {
+        integer athlete_id PK
+        string athlete_club
+        string athlete_country
+        integer athlete_year_of_birth
+        string athlete_gender
+        string athlete_age_category
+    }
+
+    dim_date {
+        date date PK
+        integer year
+        integer month
+        integer day
+        boolean is_weekend
+    }
+
+    dim_country {
+        string iso_code PK
+        string country_name
+    }
+
+    fact_results }o--|| dim_event : "event_id"
+    fact_results }o--|| dim_athlete : "athlete_id"
+    dim_event }o--|| dim_date : "event_dates"
+    dim_event }o--|| dim_country : "event_country"
+    dim_athlete }o--|| dim_country : "athlete_country"
