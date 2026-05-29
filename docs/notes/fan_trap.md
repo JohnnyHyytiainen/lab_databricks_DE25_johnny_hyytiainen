@@ -1,5 +1,5 @@
 # docs regarding marathos lab
----
+
 
 ### What NOT to do: Cartesian product
 - I just managed to do a cartesian product even though I KNEW I could easily fall into this "trap" when it comes to dimensional modeling. Apparently there is a name for it, a `fan trap`:
