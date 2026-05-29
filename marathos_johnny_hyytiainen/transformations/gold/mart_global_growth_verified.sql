@@ -1,5 +1,8 @@
 -- Mart för att få insights om de officiella deltagarna i varje event över tid
 -- Detta är baserat på min FACT table, de riktiga deltagarna som tog sig över mållinjen under Marathos event
+USE CATALOG marathos;
+
+USE SCHEMA gold;
 
 CREATE OR REFRESH MATERIALIZED VIEW marathos.gold.mart_event_growth_verified
   COMMENT "Serving view - Gold layer, year over year growth of events and finishers (Fact table)" AS
@@ -11,5 +14,5 @@ FROM
   marathos.gold.fact_results
 GROUP BY
   year_of_event
-ORDER BY 
+ORDER BY
   year_of_event ASC;
