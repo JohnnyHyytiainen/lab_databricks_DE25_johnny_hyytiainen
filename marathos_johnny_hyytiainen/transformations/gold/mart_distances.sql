@@ -4,7 +4,7 @@ USE SCHEMA gold;
 
 -- 50 KM OR UNDER MART
 CREATE OR REFRESH MATERIALIZED VIEW marathos.gold.mart_short_km_races
-  COMMENT "Serving view - Gold layer" AS
+  COMMENT "Serving view - Gold layer, mart for insights in SHORT KM races" AS
 SELECT
   f.*,
   e.event_name,
@@ -19,7 +19,7 @@ WHERE
 
 -- OVER 50KM MART
 CREATE OR REFRESH MATERIALIZED VIEW marathos.gold.mart_long_km_races
-  COMMENT "Serving view - Gold layer" AS
+  COMMENT "Serving view - Gold layer, mart for insights in LONG KM races" AS
 SELECT
   f.*,
   e.event_name,
@@ -36,7 +36,7 @@ WHERE
 
 -- 5O MILE OR UNDER MART
 CREATE OR REFRESH MATERIALIZED VIEW marathos.gold.mart_short_mile_races
-  COMMENT "Serving view - Gold layer" AS
+  COMMENT "Serving view - Gold layer, mart for insights in SHORT Mile races" AS
 SELECT
   f.*,
   e.event_name,
@@ -51,7 +51,7 @@ WHERE
 
 -- OVER 50 MILE  MART
 CREATE OR REFRESH MATERIALIZED VIEW marathos.gold.mart_long_mile_races
-  COMMENT "Serving view - Gold layer" AS
+  COMMENT "Serving view - Gold layer, mart for insights in LONG Mile races" AS
 SELECT
   f.*,
   e.event_name,
