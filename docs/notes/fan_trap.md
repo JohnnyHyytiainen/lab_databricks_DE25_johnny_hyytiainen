@@ -55,7 +55,7 @@ With this query i dont really *need* the `JOIN` and I can skip it entirely which
 
 ### 2) **Trust the Dimension modeling and go with the aggregation path**
 
-- If I were to say that `event_number_of_finishers` is the official since some athletes could be missing from the `fact table` due to data washing in silver, then I should not involve the `fact table` at all and would group directly on my `event dimension` which would look like this:
+- If I were to say that `event_number_of_finishers` is the official since some athletes could be missing from the `fact table` due to data cleaning in silver, then I should not involve the `fact table` at all and would group directly on my `event dimension` which would look like this:
 
 ```sql 
 CREATE OR REFRESH MATERIALIZED VIEW marathos.gold.mart_event_growth
