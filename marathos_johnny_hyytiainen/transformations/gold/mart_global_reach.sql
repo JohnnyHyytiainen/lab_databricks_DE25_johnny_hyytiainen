@@ -5,7 +5,7 @@ USE SCHEMA gold;
 CREATE OR REFRESH MATERIALIZED VIEW marathos.gold.mart_global_reach
   COMMENT "Serving view - Gold layer, athlete statistics aggregated by home country" AS
 SELECT
-  c.iso_code,
+  c.iso_3166,
   c.country_name,
   COUNT(f.result_id) AS total_participants,
   ROUND(AVG(f.athlete_average_speed), 2) AS national_avg_speed_kmh
@@ -16,5 +16,5 @@ FROM
     JOIN marathos.gold.dim_country c
       ON a.athlete_country = c.iso_code
 GROUP BY
-  c.iso_code,
+  c.iso_3166,
   c.country_name;
