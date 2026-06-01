@@ -1,11 +1,11 @@
 # docs regarding marathos lab
 
 
-### What NOT to do: Cartesian product
-- I just managed to do a cartesian product even though I KNEW I could easily fall into this "trap" when it comes to dimensional modeling. Apparently there is a name for it, a `fan trap`:
+### What NOT to do: Fan trap
+- I just managed to do a so called fan trap even though I KNEW I could easily fall into this "trap" when it comes to dimensional modeling. Apparently there is a name for it, a `fan trap`:
 
 ```
-A fan trap is a data modeling anti-pattern that occurs when joining multiple one-to-many relationships, leading to ambiguity and inflated metrics
+A fan trap is a data modeling and SQL anti-pattern that occurs when joining multiple one-to-many relationships(1:N), leading to ambiguity and inflated metrics
 ```
 
 What lead up to this *fan trap* is this query:
@@ -23,12 +23,12 @@ FROM
 ORDER BY
     f.year_of_event ASC;
 ```
-
+---
 Reason why it happened is this:  
 
-- Because `fact_results` contains one row per athlete, and I join it against `dim_event`, the dimension `event_number_of_finishers` will be **duplicated for each athlete who ran the race.** If a race had 100 finishers, my query will add up the number **100 a hundred times**. 
-    - Resulting in *10,000 finishers*. This is a catastrophic Cartesian like explosion, usually called a `cartesian product`, or in `SQL` terms: A `cross-join`.
+- What led up to this is a `many-to-one` duplication issue. Because fact_results contains one row per athlete, and I join it against `dim_event`, the dimension `event_number_of_finishers` will be **duplicated for each athlete who ran the race.** If a race had 100 finishers, my query will add up the number **100 a hundred times**.
 
+- When it comes to dimensional modeling, this is one must **never** `sum()` an already pre-aggregated metric from a dimension table **after** joining it with a granular fact table. Which I have proven for both myself why this is a bad idea and hopefully proven with writing about this problem.
 ---
 
 To build this mart correctly I have two ways to go, depending on how I decide to use my schema.
