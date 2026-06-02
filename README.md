@@ -54,40 +54,40 @@ Raw CSV -> Bronze (Auto Loader) -> Silver (OBT) -> Gold (Dims + Facts + Marts) -
 ```
 lab_databricks_DE25_johnny_hyytiainen
 ├─ docs/
-│  └─ notes/                          # Architectural decisions & learnings (example: avoiding Fan Traps)
-│     ├─ fan_trap.md                  # Docs regarding Fan trap and thoughts about it.
-│     └─ sources.md                   # Sources for academic transparency.  
+│  └─ notes/                               # Architectural decisions & learnings (example: avoiding Fan Traps)
+│     ├─ fan_trap.md                       # Docs regarding Fan trap and thoughts about it.
+│     └─ sources.md                        # Sources for academic transparency.  
 │
 ├─ marathos_johnny_hyytiainen/
 │  ├─ dimensional_modeling/
-│  │  └─ marathos_pdm.png             # Final Physical Data Model (Snowflake Schema)
+│  │  └─ marathos_pdm.png                  # Final Physical Data Model (Snowflake Schema)
 │  │
 │  │
 │  ├─ dashboard/
-│  │  └─ 01_*.py                      # Scripts to attempt creating custom Plotly embeddings for dashboard
+│  │  └─ 01_*.py                           # Plotly visualization scripts (prototypes for analytical storytelling)
 │  │
 │  ├─ explorations/
-│  │  ├─ 01_eda_bronze.ipynb          # Raw data discovery and profiling
-│  │  ├─ 02_eda_silver.ipynb          # Data cleaning logic & quality rules testing
-│  │  └─ 04_dashboard_creating.ipynb  # Plotly/Pandas logic drafts for dashboard KPIs
+│  │  ├─ 01_eda_bronze.ipynb               # Raw data discovery and profiling
+│  │  ├─ 02_eda_silver.ipynb               # Data cleaning logic & quality rules testing
+│  │  └─ 04_dashboard_creating_kpis.ipynb  # Plotly visualization prototypes before Databricks dashboard
 │  │
 │  ├─ setup/
-│  │  └─ setup_unity_catalog.sql      # DDL for setting up Catalogs and Schemas
+│  │  └─ setup_unity_catalog.sql           # DDL for setting up Catalogs and Schemas
 │  │
-│  ├─ transformations/                # Core Data Pipeline (Medallion Architecture)
+│  ├─ transformations/                     # Core Data Pipeline (Medallion Architecture)
 │  │  ├─ bronze/
-│  │  │  └─ raw_marathos.py           # Ingestion layer (Raw -> Bronze)
+│  │  │  └─ raw_marathos.py                # Ingestion layer (Raw -> Bronze)
 │  │  │
 │  │  ├─ silver/
-│  │  │  └─ marathos_obt.py           # Cleaned & validated One-Big-Table layer
+│  │  │  └─ marathos_obt.py                # Cleaned & validated One-Big-Table layer
 │  │  │
 │  │  └─ gold/
-│  │     ├─ dim_*.py                  # Dimension tables (Spark: Athlete, Event, Country, Date)
-│  │     ├─ fact_results.py           # Granular fact table (Spark)
-│  │     └─ mart_*.sql                # Aggregated views for BI/Genie (SQL: Growth, Demographics etc.)
+│  │     ├─ dim_*.py                       # Dimension tables (Spark: Athlete, Event, Country, Date)
+│  │     ├─ fact_results.py                # Granular fact table (Spark)
+│  │     └─ mart_*.sql                     # Aggregated views for BI/Genie (SQL: Growth, Demographics etc.)
 │  │
 │  └─ utils/
-│     └─ schema_helpers.py            # Helper functions for PySpark schemas
+│     └─ schema_helpers.py                 # Helper functions for PySpark schemas
 ├─ pyproject.toml
 └─ README.md
 ``` 
