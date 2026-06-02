@@ -17,7 +17,7 @@ This is a utility module that contains the function `rename_columns_to_snake_cas
 
 * The script iterates over `df.columns` and uses the Python library `re` (Regex) to find problems.
 
-* It replaces special characters and spaces with underscores (`_`), puts underscores between lowercase and uppercase letters (to break CamelCase), and finally converts the entire string to lowercase (`.lower()`) before applying PySparks `withColumnRenamed`
+* It replaces special characters and spaces with underscores (`_`), puts underscores between lowercase and uppercase letters (to break CamelCase), and finally converts the entire string to lowercase using `.casefold()` for unicode-safe normalization before applying PySparks `withColumnRenamed`
 
 
 ## Script: `llm_marathon_ingest.py` (Bonus Task)

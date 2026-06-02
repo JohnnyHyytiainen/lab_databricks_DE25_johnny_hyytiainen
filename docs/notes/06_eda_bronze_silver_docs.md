@@ -26,4 +26,6 @@ These two notebooks act as the platforms "before and after" inspection:
 
 * Perform `.count()`, `.describe()` and `.display()` on Spark DataFrames to compare volumes (drop-off rate) between Bronze and Silver.
 
-* Verifies that the SHA2 cryptographic keys (`result_id`, `event_id`) have actually been generated correctly and do not contain null values.
+* Verifies that the SHA2 cryptographic keys (`result_id`, `event_id`) have actually been generated correctly and do not contain null values. 
+
+* Confirmed that no null `result_ids` exist, which would indicate a failed hash on a null composite key.

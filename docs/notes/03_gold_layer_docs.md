@@ -10,7 +10,7 @@ These scripts break the broad Silver OBT into separate, specialized dimension ta
 
 ### 2. Architectural decisions (The Why)
 
-* **Normalization (Snowflake/Star Schema):** By separating `athlete` and `event` information, I removed massive redundancy. Instead of storing the text "United States" 1.3 million times in an OBT, I chose to store it once in the dimension and reference it via an ID. This reduces storage costs and speeds up BI tools tremendously - The `serving-layer` should not do any heavy lifting and be optimized for speed.
+* **Normalization (Snowflake/Star Schema):** By separating `athlete` and `event` information, I removed massive redundancy. Instead of storing the text "United States" across 1.3 million athlete rows, I chose to store it once in the dimension and reference it via an ID. This reduces storage costs and speeds up BI tools tremendously - The `serving-layer` should not do any heavy lifting and be optimized for speed.
 
 * **Master Data Management (`dim_country`):** Bringing in an external file (`dim_countries.csv`) to map old IOC codes to modern ISO-3166 is apparently a classic Data Engineering decision. Instead of hardcoding hundreds of `REPLACE()` rules in the backend or frontend (Plotly), the "Single Source of Truth" is maintained in a manageable dimension table.
 
