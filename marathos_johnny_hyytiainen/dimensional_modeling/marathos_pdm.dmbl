@@ -32,7 +32,7 @@ Table dim_date {
   year integer
   month integer
   day integer
-  day_of_week string
+  day_of_week integer
   is_weekend boolean
 }
 
