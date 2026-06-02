@@ -30,6 +30,7 @@ def create_dim_date():
         .withColumn("month", month(col("date")))
         .withColumn("day", dayofmonth(col("date")))
         # dayofweek returnerar 1 för Söndag, 7 för Lördag
+        .withColumn("day_of_week", dayofweek(col("date")))
         .withColumn(
             "is_weekend",
             when(dayofweek(col("date")).isin([1, 7]), lit(True)).otherwise(lit(False)),
