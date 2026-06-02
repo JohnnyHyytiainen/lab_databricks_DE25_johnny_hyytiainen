@@ -32,6 +32,7 @@ Table dim_date {
   year integer
   month integer
   day integer
+  day_of_week string
   is_weekend boolean
 }
 
@@ -39,6 +40,7 @@ Table dim_date {
 Table dim_country {
   iso_code string [primary key]
   country_name string
+  iso_3166 string
 }
 
 

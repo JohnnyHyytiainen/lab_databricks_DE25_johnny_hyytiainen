@@ -32,12 +32,14 @@ erDiagram
         integer year
         integer month
         integer day
+        string day_of_week
         boolean is_weekend
     }
 
     dim_country {
         string iso_code PK
         string country_name
+        string iso_3166
     }
 
     fact_results }o--|| dim_event : "event_id"
