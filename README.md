@@ -35,6 +35,7 @@ Raw CSV -> Bronze (Auto Loader) -> Silver (OBT) -> Gold (Dims + Facts + Marts) -
 - LLM-generated synthetic marathon (Stockholm Marathos Ultra) streamed through full pipeline
 - Dashboard with comprehensive insights across 4 pages
 - Marathos Genie with 10+ verified test queries
+- `Fail Fast`-pivot: Evaluated custom Plotly embeddings for dashboard but pivoted to native Databricks Lakeview/Genie to optimize for platform constraints and delivery time. It did not work out as intended because of Free User constraints.
 
 ## Key Insights
 - Covid-19 caused a 57% drop in events (2019 -> 2020), visible across all nations
@@ -48,17 +49,22 @@ Raw CSV -> Bronze (Auto Loader) -> Silver (OBT) -> Gold (Dims + Facts + Marts) -
 - Country codes follow IOC standards - historical nations preserved (URS, YUG etc.)
 - No-show rate: 8.6% (official signups vs verified finishers)
 
+
 ## Repository Structure
 ```
 lab_databricks_DE25_johnny_hyytiainen
 ├─ docs/
-│  └─ notes/                          # Architectural decisions & learnings (e avoiding Fan Traps)
+│  └─ notes/                          # Architectural decisions & learnings (example: avoiding Fan Traps)
 │     ├─ fan_trap.md                  # Docs regarding Fan trap and thoughts about it.
 │     └─ sources.md                   # Sources for academic transparency.  
 │
 ├─ marathos_johnny_hyytiainen/
 │  ├─ dimensional_modeling/
 │  │  └─ marathos_pdm.png             # Final Physical Data Model (Snowflake Schema)
+│  │
+│  │
+│  ├─ dashboard/
+│  │  └─ 01_*.py                      # Scripts to attempt creating custom Plotly embeddings for dashboard
 │  │
 │  ├─ explorations/
 │  │  ├─ 01_eda_bronze.ipynb          # Raw data discovery and profiling
