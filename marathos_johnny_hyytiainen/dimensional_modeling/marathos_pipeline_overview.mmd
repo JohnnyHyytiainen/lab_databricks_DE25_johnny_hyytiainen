@@ -1,0 +1,142 @@
+flowchart TD
+    subgraph SOURCES["Data Sources"]
+        CSV["TWO_CENTURIES_OF_UM_RACES.csv
+        7.46M rows, 200+ years of data
+        Kaggle - Ultra Marathon Running"]
+        LLM["Stockholm Marathos Ultra (SWE)
+        LLM-generated synthetic data
+        50 rows via llm_marathon_ingest.py"]
+        DIM["dim_countries.csv
+        LLM-generated ISO/IOC mapping
+        195 nations, historical codes preserved"]
+    end
+
+    subgraph SETUP["Infrastructure"]
+        UC["setup_unity_catalog.sql
+        Idempotent DDL
+        Creates: marathos.bronze/silver/gold + Volume"]
+    end
+
+    subgraph INGESTION["Bronze Layer
+    (Raw, untouched - SSOT)"]
+        AL["Auto Loader (cloudFiles)
+        Incremental streaming ingestion
+        schema inference + snake_case normalization"]
+        SH["schema_helpers.py
+        DRY utility - renames all headers
+        to strict snake_case"]
+        BT["bronze.raw_marathon_data
+        Delta Streaming Table
+        7.46M rows"]
+    end
+
+    subgraph SILVER["Silver Layer
+    (Validated + Normalized OBT)"]
+        OBT["marathos_obt.py
+        Fail Fast filtering
+        Regex extraction (country, distance, unit)
+        SHA2 Surrogate Keys (event_id, result_id)
+        Time conversion HH:MM:SS → double hours
+        Speed sanity check - capped at 25 km/h"]
+        ST["silver.marathos_obt
+        Delta Streaming Table
+        6.8M rows"]
+    end
+
+    subgraph GOLD_DIMS["Gold Layer - Dimensions"]
+        DA["dim_athlete
+        1.3M unique athletes"]
+        DE["dim_event
+        83K unique events"]
+        DC["dim_country
+        217 countries
+        IOC + ISO-3166 mapping (BONUS)"]
+        DD["dim_date
+        111K dates, 1798–2100
+        is_weekend, day_of_week (BONUS)"]
+    end
+
+    subgraph GOLD_FACT["Gold Layer - Fact"]
+        FR["fact_results
+        6.8M rows
+        Slim design: FKs + metrics only
+        Kimball methodology"]
+    end
+
+    subgraph GOLD_MARTS["Gold Layer - Marts
+    (Materialized Views)"]
+        M1["mart_event_growth_official
+        Dim-driven - official signups
+        135 rows"]
+        M2["mart_event_growth_verified
+        Fact-driven - verified finishers
+        134 rows
+        → No-Show Rate KPI: 8.6%"]
+        M3["mart_demographics
+        Gender + age distribution
+        42K rows"]
+        M4["mart_global_reach
+        Participants by country
+        iso_3166 for choropleth maps
+        192 rows"]
+        M5["mart_seasonal_events_country
+        Prime time months per nation
+        929 rows"]
+        M6["mart_numb_events_country
+        Event growth per country/year
+        2.6K rows"]
+        M7["mart_distances
+        Short/long km + mile races
+        Split into 4 marts"]
+    end
+
+    subgraph SERVING["Serving Layer"]
+        DB["Databricks Lakeview Dashboard
+        4 pages: KPIs, Growth, Global Reach, Demographics
+        7 visualizations"]
+        GE["Marathos Genie
+        AI-powered ad hoc SQL
+        10+ verified test queries"]
+        PL["Plotly Scripts (dashboard/)
+        7 prototype visualizations
+        Analytical storytelling artifacts"]
+    end
+
+    CSV -->|"Lands in Unity Catalog Volume"| AL
+    LLM -->|"Synthetic CSV via llm_marathon_ingest.py"| AL
+    DIM -->|"ISO/IOC lookup"| DC
+    UC -.->|"Creates catalog + schemas"| AL
+    SH -->|"Normalizes headers"| AL
+    AL --> BT
+    BT --> OBT
+    OBT --> ST
+    ST --> DA
+    ST --> DE
+    ST --> FR
+    DE --> DC
+    DE --> DD
+    FR --> M1
+    FR --> M2
+    FR --> M3
+    FR --> M4
+    FR --> M5
+    FR --> M6
+    FR --> M7
+    DA --> M3
+    DA --> M4
+    DC --> M4
+    DD --> M5
+    DD --> M6
+    M1 --> DB
+    M2 --> DB
+    M3 --> DB
+    M4 --> DB
+    M5 --> DB
+    M6 --> DB
+    FR --> GE
+    DA --> GE
+    DE --> GE
+    M1 --> GE
+    M2 --> GE
+    DB -->|"Link to Genie"| GE
+    ST --> PL
