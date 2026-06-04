@@ -18,7 +18,7 @@ These SQL scripts create *Materialized Views* (Marts) on top of my Snowflake sch
 
 * **Materialized Views:** By defining the views as `CREATE OR REFRESH MATERIALIZED VIEW`, the data is pre calculated. When the business side loads its Dashboard of over 7 million performances, Databricks actually scans only a few rows in the materialized view.
 
-* **Geographic and Temporal Separation:** By creating specialized views for seasons (`mart_seasonal_events_country`) and global reach (`mart_global_reach`), I minimize the risk of the end user building incorrect aggregations.
+* **Geographic and Temporal Separation:** By creating specialized views for seasons (`mart_seasonal_events_country`) and global reach (`mart_global_reach`), I minimize the risk of the end user(Me or `Marathos Genie`) building incorrect aggregations.
 
 ---
 
