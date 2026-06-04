@@ -20,9 +20,9 @@ Raw CSV -> Bronze (Auto Loader) -> Silver (OBT) -> Gold (Dims + Facts + Marts) -
 ## Pipeline
 | Layer | Description | Records |
 |-------|-------------|---------|
-| Bronze | Raw ingestion via Auto Loader (cloudFiles) | 7.46M |
+| Bronze | Raw ingestion via Auto Loader (cloudFiles) | 7.5M |
 | Silver | Cleaned OBT, surrogate keys, validated data | 6.8M |
-| Gold | Star schema + 10 analytical marts | 82K events |
+| Gold | Snowflake schema + 10 analytical marts |  |
 
 ## Gold Layer
 **Dimensions:** `dim_athlete`, `dim_event`, `dim_country` (bonus), `dim_date` (bonus)  
@@ -60,8 +60,8 @@ lab_databricks_DE25_johnny_hyytiainen
 │
 ├─ marathos_johnny_hyytiainen/
 │  ├─ dimensional_modeling/
-│  │  └─ marathos_pdm.png                  # Final Physical Data Model (Snowflake Schema)
-│  │
+│  │  ├─ marathos_pdm.png                  # Final Physical Data Model (Snowflake Schema)
+│  │  └─ marathos_pipeline_overview.png    # Complete overview of entire pipeline from raw data to serving layer.
 │  │
 │  ├─ dashboard/
 │  │  └─ 01_*.py                           # Plotly visualization scripts (prototypes for analytical storytelling)
@@ -87,6 +87,7 @@ lab_databricks_DE25_johnny_hyytiainen
 │  │     └─ mart_*.sql                     # Aggregated views for BI/Genie (SQL: Growth, Demographics etc.)
 │  │
 │  └─ utils/
+│     ├─ llm_marathon_ingest.py            # Synthetic generated data to ingest
 │     └─ schema_helpers.py                 # Helper functions for PySpark schemas
 ├─ pyproject.toml
 └─ README.md
